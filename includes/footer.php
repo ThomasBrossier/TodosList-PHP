@@ -1,0 +1,1 @@
+<footer>Brossier Thomas 2023 © Tous droits réservés</footer>
