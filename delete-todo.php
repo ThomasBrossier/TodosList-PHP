@@ -10,7 +10,7 @@ if($id){
     $todos = json_decode($data, true) ?? [];
     if(count($todos)){
         $todoIndex = array_search($id, array_column($todos,'id'));
-        $todos[$todoIndex]['done'] = !$todos[$todoIndex]['done'];
+        array_splice($todos, $todoIndex,1);
         file_put_contents($filename, json_encode($todos,JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 }

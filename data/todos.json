@@ -1,1 +1,12 @@
-[{"name":"manger une banane","id":1674637632,"done":true},{"name":"aller faire des courses","id":1674637725,"done":true},{"name":"Ajouter une todo","id":1674638176,"done":true},{"name":"Creer un portfolio","id":1674638230,"done":true}]
+[
+    {
+        "name": "manger une banane",
+        "id": 1674637632,
+        "done": true
+    },
+    {
+        "name": "aller faire des courses",
+        "id": 1674637725,
+        "done": true
+    }
+]
