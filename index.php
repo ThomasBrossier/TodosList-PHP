@@ -1,3 +1,41 @@
+<?php
+const ERROR_TOO_SHORT = 'Votre todo doit faire au moins 5 caractères';
+const ERROR_REQUIRED = 'Veuillez saisir une todo';
+$error = '';
+$filename = __DIR__ . "/data/todos.json";
+$todos = [];
+
+if(file_exists($filename)){
+    $data = file_get_contents($filename);
+    $todos = json_decode($data, true) ?? [];
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $_POST = filter_input_array(INPUT_POST, [
+        "todo" => [
+            "filter" => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            "flags" => FILTER_FLAG_NO_ENCODE_QUOTES | FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_BACKTICK
+        ]
+    ]);
+
+    $todo = $_POST['todo'] ?? '';
+    if(!$todo){
+        $error = ERROR_REQUIRED;
+    }else if (mb_strlen($todo) < 5){
+        $error = ERROR_TOO_SHORT;
+    }
+    if(!$error){
+        $todos = [...$todos,
+                ['name'=> $todo,
+                'id' => time(),
+                'done' => false]
+        ];
+        file_put_contents($filename, json_encode($todos, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -22,8 +60,21 @@
                 <input type="text" name="todo">
                 <button class="btn btn-primary">Ajouter</button>
             </form>
+            <?php if ($error) : ?>
+                <p class="text-danger"><?= $error ?></p>
+            <?php endif; ?>
+            <div class="todo-list">
+                <ul class="todo-list">
+                    <?php foreach($todos as $t): ?>
 
-            <div class="todo-list"></div>
+                        <li class="todo-item">
+                            <span class="todo-name"><?= $t['name'] ?></span>
+                            <button class="btn btn-primary btn-small">Valider</button>
+                            <button class="btn btn-danger btn-small">Supprimer</button>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
 
     </div>

@@ -57,11 +57,19 @@ h1 {
     box-shadow: var(--box-shadow);
 }
 
+.btn-small {
+    padding: 5px 10px;
+    font-size: 1.4rem;
+}
+
 .btn-primary {
     background-color: var(--primary);
     color: var(--text-color-light);
 }
-
+.btn-danger{
+    background-color: var(--danger);
+    color: var(--text-color-light);
+}
 /* header */
 
 header {
@@ -142,4 +150,21 @@ footer {
     color: var(--danger);
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.todo-item {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 1.5rem;
+}
+
+.todo-item:nth-child(odd) {
+    background-color: var(--background-light);
+}
+
+.todo-name {
+    flex: 1;
+    margin-right: 0.5rem;
 }
