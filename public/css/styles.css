@@ -168,3 +168,7 @@ footer {
     flex: 1;
     margin-right: 0.5rem;
 }
+
+.todo-done{
+    text-decoration : line-through;
+}

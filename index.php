@@ -5,12 +5,12 @@ $error = '';
 $filename = __DIR__ . "/data/todos.json";
 $todos = [];
 
-if(file_exists($filename)){
+if (file_exists($filename)) {
     $data = file_get_contents($filename);
     $todos = json_decode($data, true) ?? [];
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_POST = filter_input_array(INPUT_POST, [
         "todo" => [
             "filter" => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
@@ -19,18 +19,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     ]);
 
     $todo = $_POST['todo'] ?? '';
-    if(!$todo){
+    if (!$todo) {
         $error = ERROR_REQUIRED;
-    }else if (mb_strlen($todo) < 5){
+    } else if (mb_strlen($todo) < 5) {
         $error = ERROR_TOO_SHORT;
     }
-    if(!$error){
+    if (!$error) {
         $todos = [...$todos,
-                ['name'=> $todo,
+            ['name' => $todo,
                 'id' => time(),
                 'done' => false]
         ];
         file_put_contents($filename, json_encode($todos, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        header('Location: /');
     }
 }
 
@@ -65,11 +66,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             <?php endif; ?>
             <div class="todo-list">
                 <ul class="todo-list">
-                    <?php foreach($todos as $t): ?>
+                    <?php foreach ($todos as $t): ?>
 
                         <li class="todo-item">
-                            <span class="todo-name"><?= $t['name'] ?></span>
-                            <button class="btn btn-primary btn-small">Valider</button>
+                            <span class="todo-name <?= $t['done'] ? 'todo-done' : "" ?>"><?= $t['name'] ?></span>
+                            <a href="/switch-todo.php?id=<?= $t['id'] ?>">
+                                <button class="btn btn-primary btn-small"><?= $t['done'] ? "Annuler" : "Valider" ?></button>
+                            </a>
                             <button class="btn btn-danger btn-small">Supprimer</button>
                         </li>
                     <?php endforeach; ?>
